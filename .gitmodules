@@ -1,0 +1,3 @@
+[submodule "puzzler"]
+	path = puzzler
+	url = https://github.com/RisAbd/puzzler
