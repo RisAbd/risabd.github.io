@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <meta property="og:title" content="Куран хатм | Жылдык расписание" />
+  <meta property="og:site_name" content="Куран хатм | Жылдык расписание" />
+  <meta property="og:description" content="Куран хатм | Жылдык расписание" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vc-emed-gov.com.kg/_yillik-hatm-scheduler.html" />
+  <meta property="og:image" itemprop="image" content="https://vc-emed-gov.com.kg/yillik-hatm-scheduler-preview.png" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Куран хатм | Жылдык расписание</title>
+  <style type="text/css">
+    :root {
+      --first-10rows-color: #d9ead3;
+      --second-10rows-color: #c9daf8;
+      --third-10-rows-color: #fff2cc;
+      --table-header-color: #efefef;
+      --every-10th-row-color: yellow; 
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      font-family: 'Roboto', Arial;
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+    }
+    #settings > .cuz-buttons-container {
+      display: grid;
+      gap: 3px;
+      grid-template-columns: repeat(15, 1fr);
+      padding: 0.5em;
+    }
+    #settings > .cuz-buttons-container > button {
+      border: 1px solid gray;
+      background-color: #eeeeee;
+      font-size: 1em;
+      outline: none; 
+    }
+    #settings > .cuz-buttons-container > button:focus {
+      background-color: #99ffff;
+    }
+    @media (orientation: portrait) {
+      #settings > .cuz-buttons-container {
+        grid-template-columns: repeat(10, 1fr);
+      }
+    }
+    #schedule-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 2em;
+      flex-grow: 1;
+      padding: 1em 0;
+    }
+    .schedule {
+      margin-top: 20px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      text-align: right;
+      margin: auto 0;
+    }
+    .schedule th {
+      background-color: var(--table-header-color,);
+      text-align: right;
+    }
+    .schedule td, 
+    .schedule th {
+      border: 1px solid gray;
+    }
+    .schedule tr {
+      user-select: none;
+    }
+    .schedule tr.day {
+/*      font-size: 1.1rem;*/
+    }
+    /*.schedule tr.day > td.number {
+      border-bottom: 3px solid transparent;;
+    }*/
+    table.schedule:nth-child(2) thead,
+    .schedule tr.current-read {
+      font-weight: bold;
+      border: 2px solid yellowgreen;
+      box-shadow: yellow 0px 0px 15px;
+    }
+    .schedule tr.current-read {
+      font-size: 1.05rem;
+    }
+    table.schedule thead th.number {
+      width: 2em;
+    }
+    table.schedule thead th.day {
+      width: 5em;
+    }
+    table.schedule thead th.cuz {
+      width: 2.5em;
+    }
+    table.schedule:nth-child(2) thead th.day {
+      width: 4em;
+      font-size: 1.05rem;
+    }
+    table.schedule:nth-child(2) thead th.day {
+      font-size: 1.05rem;
+    }
+    .schedule tr.day.today {
+      font-weight: bold;
+      font-size: 1.05rem;
+      border: 2px solid #f55;
+      box-shadow: #c87b7b 0px 0px 15px;
+    }
+    .schedule:nth-child(1) tbody > tr:nth-child(1) > td.cuz {
+      background-color: black;
+      color: white;
+      font-weight: bold;
+    }
+    /*
+    .schedule tbody > tr:nth-child(10n) > td.number {
+      background-color: var(--every-10th-row-color);
+    }
+    */
+    .schedule:nth-child(2) td.day {
+      background-color: lightgray;
+    }
+    .schedule td {
+      position: relative;
+      background-clip: padding-box;
+    }
+
+    .schedule tr.done td.day:before,
+    .schedule tr.done td.cuz:before {
+      content: " ";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      background-color: black;
+      height: 1px;
+      width: 100%;
+    }  
+    .schedule tr.done td.number:before {
+      content: '✅';
+      position: absolute;
+      top: 50%;
+      left: -30%;
+      transform: translateY(-50%);
+    }
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: black;
+        color: white;
+      }
+      :root {  
+        --first-10rows-color: #50584d;
+        --second-10rows-color: #454b55;
+        --third-10-rows-color: #474338;
+        --table-header-color: #111111;
+        --every-10th-row-color: darkcyan;
+      }
+      .schedule:nth-child(1) tbody > tr:nth-child(1) > td.cuz {
+        background-color: #dddddd;
+        color: black;
+      }
+      #settings > .cuz-buttons-container > button {
+        background-color: #333333;
+        color: white;
+      }
+      #settings > .cuz-buttons-container > button:focus {
+        background-color: #888800;
+      }
+      table.schedule:nth-child(2) thead,
+      .schedule tr.current-read {
+        border-color: #00ff00;
+        box-shadow: #00ff00 0px 0px 15px;
+      }
+      .schedule tr.done td.day:before,
+      .schedule tr.done td.cuz:before {
+        background-color: white;
+      }
+      .schedule:nth-child(2) td.day {
+        background-color: #444;
+      }
+      .schedule tr.day.today {
+        border-color: yellow;
+        box-shadow: yellow 0px 0px 15px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div id="settings">
+    <div class="cuz-buttons-container"></div>
+    <style>
+      #advanced-settings {
+        display: none;
+        width: 100px;
+        height: 200px;
+        background-color: red;
+        position: fixed;
+        right: 1em;
+        bottom: 1em;
+      }
+      #advanced-settings::hover {
+      }
+      #advanced-settings::after {
+        content: '⚙️';
+        font-size: 2rem;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: block;
+        visibility: visible;
+      }
+    </style>
+    <div id="advanced-settings"></div>
+  </div>
+
+  <!-- <table id="schedule">
+    <thead>
+      <th style="width: 2.5em">#</th>
+      <th style="width: 5.5em">day</th>
+      <th style="width: 2.5em">cuz</th>
+    </thead>
+    <tbody>
+    </tbody>
+  </table> -->
+  <div id="schedule-container"></div>
+  <template id="schedule">
+    <table class="schedule">
+      <thead>
+        <th class="number">#</th>
+        <th class="day">кун</th>
+        <th class="cuz">пара</th>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </template>
+  <template id="schedule-row">
+    <tr>
+      <td class="number"></td>
+      <td class="day"></td>
+      <td class="cuz"></td>
+    </tr>
+  </template>
+
+  <script>
+    const settingsEl = document.querySelector('#settings');
+    const cuzButtonsContainerEl = settingsEl.querySelector('.cuz-buttons-container');
+    const scheduleContainerEl = document.querySelector('#schedule-container');
+    const scheduleTableTeplateEl = document.querySelector('#schedule');
+    const scheduleTableRowTemplateEl = document.querySelector('template#schedule-row');
+
+
+    let currentCuz = 1;
+    function fillScheduleTable(e) {
+
+      const startCuz = +(this?.innerText ?? currentCuz);
+      const ONE_DAY = 24*60*60*1000;
+      const CUZ_SPLITS = 10;
+      const READ_INTERVAL = CUZ_SPLITS * ONE_DAY;
+      const cuzCount = 30;
+      let tablesCount = 1;
+      // if (window.matchMedia('(orientation: landscape)').matches) {
+      //   tablesCount = 3;
+      // }
+      const startDate = new Date(2025, 3, 1);
+      const ROW_COLORS = {0: 'var(--first-10rows-color,)',
+                          1: 'var(--second-10rows-color,)',
+                          2: 'var(--third-10-rows-color,)',};
+      const MONTH_KY = {0: 'янв.', 1: 'фев.', 2: 'март', 3: 'апр.', 4: 'май', 5: 'июнь',
+                        6: 'июль', 7: 'авг.', 8: 'сен.', 9: 'окт.', 10: 'нояб.', 11: 'дек.',};
+
+      scheduleContainerEl.innerHTML = '';
+      // const scheduleTableEl = scheduleTableTeplateEl.content.cloneNode(true);
+      // const tBodyEl = scheduleTableEl.querySelector('tbody');
+      // scheduleContainerEl.appendChild(scheduleTableEl);
+
+      const _today = new Date(new Date().getTime());
+      const isCurrentRead = (date) => {
+        const diff = _today - date;
+        if (diff >= 0 && diff < READ_INTERVAL) {
+          return true;
+        }
+        return false;
+      };
+      const isToday = (date) => (date.getYear() === _today.getYear() && date.getMonth() === _today.getMonth() && date.getDate() === _today.getDate());
+
+
+      const scheduleTableEl = scheduleTableTeplateEl.content.cloneNode(true);
+      const tBodyEl = scheduleTableEl.querySelector('tbody');
+      scheduleContainerEl.appendChild(scheduleTableEl);
+
+
+      function onCuzRowClick(e) {
+        const {startDateParams, cuz} = e.target.closest('tr').dataset;
+        const readStartDate = new Date(...JSON.parse(startDateParams));
+        let dailyScheduleTableEl = scheduleContainerEl.querySelector('table.schedule:nth-child(2)');
+        if (!dailyScheduleTableEl) {
+          dailyScheduleTableEl = scheduleTableTeplateEl.content.cloneNode(true);
+          dailyScheduleTableEl.querySelector('th.cuz').innerText = 'бет';
+          dailyScheduleTableEl.querySelector('th.day').innerText = `${cuz} пара`;
+        } 
+        const dailyTBodyEl = dailyScheduleTableEl.querySelector('tbody');
+        scheduleContainerEl.appendChild(dailyScheduleTableEl);
+
+        dailyTBodyEl.innerText = '';
+
+        Array.from({length: CUZ_SPLITS}).forEach((_, i) => {
+          const date = new Date(readStartDate.getTime() + i * ONE_DAY);
+          const dayReadRowEl = scheduleTableRowTemplateEl.content.cloneNode(true).querySelector('tr');
+          dayReadRowEl.classList.add('day');
+          dayReadRowEl.querySelector('.number').innerText = '-';
+          const dDayEl = dayReadRowEl.querySelector('.day');
+          dDayEl.innerText = `${new Date(date).getDate()} ${MONTH_KY[date.getMonth()]}`;
+          dayReadRowEl.querySelector('.cuz').innerText = (cuz-1) * 20 + 1 + i * (20 / CUZ_SPLITS);
+          if (isToday(date)) {
+            dayReadRowEl.classList.add('today');
+          }
+          dailyTBodyEl.appendChild(dayReadRowEl);
+        });
+      }
+
+      Array.from({length: cuzCount / tablesCount}).forEach((_, i) => {
+        // i = i + 0*cuzCount / tablesCount;
+        const readRowEl = scheduleTableRowTemplateEl.content.cloneNode(true).querySelector('tr');
+        const readStartDate = new Date(startDate.getTime() + READ_INTERVAL*i);
+        let cuz = (startCuz + i);
+        if (cuz > 30) {
+          cuz -= 30;
+        }
+        readRowEl.querySelector('.number').innerText = i+1;
+        const dayEl = readRowEl.querySelector('.day')
+        dayEl.style.backgroundColor = ROW_COLORS[Math.floor(i/10)%3];
+        // readStartDate.toLocaleString('default', {month: 'short'})
+        dayEl.innerText = `${readStartDate.getDate()} ${MONTH_KY[readStartDate.getMonth()]}`;
+        readRowEl.querySelector('.cuz').innerText = cuz;
+        tBodyEl.appendChild(readRowEl);
+
+        readRowEl.dataset.startDateParams = JSON.stringify([readStartDate.getFullYear(), readStartDate.getMonth(), readStartDate.getDate()]);
+        readRowEl.dataset.readStartDate = `${readStartDate.getFullYear()}-${readStartDate.getMonth()+1}-${readStartDate.getDate()}`;
+        readRowEl.dataset.cuz = cuz;
+
+        readRowEl.addEventListener('click', onCuzRowClick);
+
+        if (isCurrentRead(readStartDate)) {
+          readRowEl.classList.add('current-read');
+          readRowEl.click()
+          // Array.from({length: CUZ_SPLITS}).forEach((_, i) => {
+          //   const date = new Date(readStartDate.getTime() + i * ONE_DAY);
+          //   console.log(readStartDate, readStartDate.getTime(), i, date);
+          //   const dayReadRowEl = readRowEl.cloneNode(true);
+          //   dayReadRowEl.classList.add('day');
+          //   dayReadRowEl.querySelector('.number').innerText = '';
+          //   const dDayEl = dayReadRowEl.querySelector('.day');
+          //   dDayEl.innerText = `${new Date(date).getDate()} ${MONTH_KY[date.getMonth()]}`;
+          //   dDayEl.style.backgroundColor = 'lightgray';
+          //   dayReadRowEl.querySelector('.cuz').innerText = (cuz-1) * 20 + 1 + i * (20 / CUZ_SPLITS);
+          //   if (isToday(date)) {
+          //     dayReadRowEl.classList.add('today');
+          //   }
+          //   tBodyEl.appendChild(dayReadRowEl);
+          // })
+        }
+      });
+
+      if (e?.target) {
+        window.location.hash = `#${e.target.id}`;
+      }
+    }
+
+    window.addEventListener("orientationchange", () => {
+      // todo:
+      console.log('orientationchange')
+      setTimeout(fillScheduleTable, 10)
+    }, false);
+
+    Array.from({length: 30}).forEach((_, i) => {
+      const cuzButton = document.createElement('button');
+      cuzButton.id = `cuz-${i+1}`
+      cuzButton.innerText = i+1;
+      cuzButton.onclick = cuzButton.onfocus = fillScheduleTable;
+      cuzButtonsContainerEl.appendChild(cuzButton);
+      if (i === 0) {
+        cuzButton.click();
+      }
+    });
+
+    setInterval(fillScheduleTable, 1 * 60 * 60 * 1000);
+
+  </script>
+
+</body>
+</html>
