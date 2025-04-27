@@ -1,3 +1,6 @@
 [submodule "puzzler"]
 	path = puzzler
 	url = https://github.com/RisAbd/puzzler
+[submodule "image-audio-guide-recorder"]
+	path = image-audio-guide-recorder
+	url = https://github.com/RisAbd/image-audio-guide-recorder.git
