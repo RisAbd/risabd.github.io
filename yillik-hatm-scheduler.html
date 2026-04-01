@@ -195,29 +195,6 @@
 <body>
   <div id="settings">
     <div class="cuz-buttons-container"></div>
-    <style>
-      #advanced-settings {
-        display: none;
-        width: 100px;
-        height: 200px;
-        background-color: red;
-        position: fixed;
-        right: 1em;
-        bottom: 1em;
-      }
-      #advanced-settings::hover {
-      }
-      #advanced-settings::after {
-        content: '⚙️';
-        font-size: 2rem;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        display: block;
-        visibility: visible;
-      }
-    </style>
-    <div id="advanced-settings"></div>
   </div>
 
   <!-- <table id="schedule">
@@ -229,7 +206,55 @@
     <tbody>
     </tbody>
   </table> -->
-  <div id="schedule-container"></div>
+  <style>
+    .main-content {
+      position: relative;
+      flex-grow: 1;
+      justify-content: center;
+      display: flex;
+    }
+  </style>
+  <div class="main-content">
+    <div id="schedule-container"></div>
+
+    <style>
+      .advanced-settings-container {
+        position: absolute;
+        right: 1em;
+        top: 1em;
+        display: flex;  
+        flex-direction: column;
+        align-items: end;
+        border: black 1px solid;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+      }
+      .advanced-settings-reveal {
+        font-size: 1.5rem;
+        bottom: 0;
+        right: 0;
+        display: block;
+        visibility: visible;
+      }
+      #advanced-settings:hover,
+      .advanced-settings-reveal:hover + #advanced-settings {
+        display: flex;
+      }
+      #advanced-settings {
+        display: none;
+        flex-direction: column;
+      }
+    </style>
+    <div class="advanced-settings-container">
+      <span class="advanced-settings-reveal">⚙️</span>
+      <div id="advanced-settings">
+        <hr>
+        <label>Башталуусу: <input name="start-date" type="date" value="2026-04-01"></label>
+        <label>Кунуно канча беттен: <input disabled name="pages-per-day" type="number" value="2" min="1" style="width: 4rem;"></label>
+      </div>
+    </div>
+  </div>
+
   <template id="schedule">
     <table class="schedule">
       <thead>
@@ -251,16 +276,31 @@
 
   <script>
     const settingsEl = document.querySelector('#settings');
+    const advancedSettingsEl = document.querySelector('#advanced-settings');
+    const startDateInputEl = advancedSettingsEl.querySelector("input[name=start-date]");
+    const pagesPerDayCountInputEl = advancedSettingsEl.querySelector("input[name=pages-per-day]");
     const cuzButtonsContainerEl = settingsEl.querySelector('.cuz-buttons-container');
     const scheduleContainerEl = document.querySelector('#schedule-container');
     const scheduleTableTeplateEl = document.querySelector('#schedule');
     const scheduleTableRowTemplateEl = document.querySelector('template#schedule-row');
 
+    const _SELECTED_CUZ_KEY = 'selected-cuz'
+    function saveSelectedCuz(cuzNumber) {
+      localStorage.setItem(_SELECTED_CUZ_KEY, cuzNumber);
+    }
+    function getSelectedCuz() {
+      return +localStorage.getItem(_SELECTED_CUZ_KEY) || 1;
+    }
 
-    let currentCuz = 1;
+
+    advancedSettingsEl.onchange = fillScheduleTable;
+
+    let currentCuz = getSelectedCuz();
     function fillScheduleTable(e) {
 
-      const startCuz = +(this?.innerText ?? currentCuz);
+      const startCuz = +(this?.dataset.number ?? currentCuz);
+      saveSelectedCuz(startCuz);
+      currentCuz = startCuz;
       const ONE_DAY = 24*60*60*1000;
       const CUZ_SPLITS = 10;
       const READ_INTERVAL = CUZ_SPLITS * ONE_DAY;
@@ -269,7 +309,8 @@
       // if (window.matchMedia('(orientation: landscape)').matches) {
       //   tablesCount = 3;
       // }
-      const startDate = new Date(2025, 3, 1);
+
+      const startDate = new Date(startDateInputEl.value);
       const ROW_COLORS = {0: 'var(--first-10rows-color,)',
                           1: 'var(--second-10rows-color,)',
                           2: 'var(--third-10-rows-color,)',};
@@ -368,10 +409,6 @@
           // })
         }
       });
-
-      if (e?.target) {
-        window.location.hash = `#${e.target.id}`;
-      }
     }
 
     window.addEventListener("orientationchange", () => {
@@ -383,11 +420,13 @@
     Array.from({length: 30}).forEach((_, i) => {
       const cuzButton = document.createElement('button');
       cuzButton.id = `cuz-${i+1}`
-      cuzButton.innerText = i+1;
+      const cuzNumber = i+1;
+      cuzButton.dataset.number = cuzNumber;
+      cuzButton.innerText = cuzNumber;
       cuzButton.onclick = cuzButton.onfocus = fillScheduleTable;
       cuzButtonsContainerEl.appendChild(cuzButton);
-      if (i === 0) {
-        cuzButton.click();
+      if (cuzNumber === currentCuz) {
+        cuzButton.click()
       }
     });
 
