@@ -228,9 +228,10 @@
         border: black 1px solid;
         border-radius: 0.5rem;
         padding: 0.5rem;
+        background-color: white;
       }
       .advanced-settings-reveal {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         bottom: 0;
         right: 0;
         display: block;
@@ -243,6 +244,12 @@
       #advanced-settings {
         display: none;
         flex-direction: column;
+      }
+      @media (prefers-color-scheme: dark) {
+        .advanced-settings-container {
+          background-color: black;
+          border-color: white;
+        }
       }
     </style>
     <div class="advanced-settings-container">
