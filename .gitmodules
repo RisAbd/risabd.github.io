@@ -4,3 +4,7 @@
 [submodule "image-audio-guide-recorder"]
 	path = image-audio-guide-recorder
 	url = https://github.com/RisAbd/image-audio-guide-recorder.git
+[submodule "syncronized"]
+	path = syncronized
+	url = https://github.com/RisAbd/synchronized.git
+	branch = github.io
